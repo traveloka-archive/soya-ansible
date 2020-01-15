@@ -20,7 +20,7 @@
 
     - name: download object
       get_url:
-        url: "{{ s3_object_url.url }}"
+        url: "s3://{{ s3_object_url.url }}"
         dest: "{{ s3_tmp_file }}"
 
     - name: extract object
