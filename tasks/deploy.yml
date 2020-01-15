@@ -1,45 +1,41 @@
-- name: get archive url from s3
+---
+- name: get object presigned url
   aws_s3:
-    mode: "geturl"
+    mode: geturl
     bucket: "{{ bundle_s3_bucket }}"
     object: "{{ bundle_s3_object }}"
-    max_keys: 1
     ignore_nonexistent_bucket: True
   run_once: true
   delegate_to: 127.0.0.1
-  register: s3_url
-  
-- name: ensure target directory exist
-  file:
-    path: "{{ service_directory_target }}"
-    state: directory
-    mode: 0755
-  become: yes
+  register: s3_object_url
 
-- set_fact:
-    s3_tmp_file: "/tmp/{{ bundle_s3_bucket | to_uuid }}.tar.gz"
+- block:
+    - set_fact:
+        s3_tmp_file: "/tmp/{{ s3_object_url.url | to_uuid }}.{{ s3_object_extension }}"
 
-- name: download and extract bundle
-  become: yes
-  block:
-    - name: download archive to temporary file
+    - name: ensure the target directory exists
+      file:
+        path: "{{ service_directory_target }}"
+        state: directory
+
+    - name: download object
       get_url:
-        url: "{{ s3_url.url }}"
+        url: "{{ s3_object_url.url }}"
         dest: "{{ s3_tmp_file }}"
-      delegate_to: localhost
-    - name: extract bundle to target directory
+
+    - name: extract object
       unarchive:
         src: "{{ s3_tmp_file }}"
         remote_src: yes
         dest: "{{ service_directory_target }}"
-        owner: root
-        group: root
 
-  always:
     - name: remove temporary file
       file:
         path: "{{ s3_tmp_file }}"
         state: absent
+  become: yes
+  become_method: sudo
+  become_user: root
 
 - name: set current version
   file:
