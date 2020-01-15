@@ -6,7 +6,7 @@
   become: yes
 
 - set_fact:
-    s3_tmp_file: "/tmp/{{ s3_url.url | to_uuid }}.tar.gz"
+    s3_tmp_file: "/tmp/{{ bundle_s3_bucket | to_uuid }}.tar.gz"
 
 - name: download and extract bundle
   become: yes
