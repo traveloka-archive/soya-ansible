@@ -11,7 +11,7 @@
 
 - block:
     - set_fact:
-        s3_tmp_file: "/tmp/{{ s3_object_url.url | to_uuid }}.{{ s3_object_extension }}"
+        s3_tmp_file: "/tmp/{{ s3_object_url.url | to_uuid }}"
 
     - name: ensure the target directory exists
       file:
