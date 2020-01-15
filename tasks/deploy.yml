@@ -1,3 +1,14 @@
+- name: get archive url from s3
+  aws_s3:
+    mode: "geturl"
+    bucket: "{{ bundle_s3_bucket }}"
+    object: "{{ bundle_s3_object }}"
+    max_keys: 1
+    ignore_nonexistent_bucket: True
+  run_once: true
+  delegate_to: 127.0.0.1
+  register: s3_url
+  
 - name: ensure target directory exist
   file:
     path: "{{ service_directory_target }}"
@@ -12,11 +23,9 @@
   become: yes
   block:
     - name: download archive to temporary file
-      aws_s3:
-        bucket: "{{ bundle_s3_bucket }}"
-        object: "{{ bundle_s3_object }}"
+      get_url:
+        url: "{{ s3_url.url }}"
         dest: "{{ s3_tmp_file }}"
-        mode: get
       delegate_to: localhost
     - name: extract bundle to target directory
       unarchive:
