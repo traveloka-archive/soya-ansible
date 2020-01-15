@@ -10,8 +10,8 @@ service_directory_current: "{{ service_directory }}/current"
 
 pm2_node_env: "production"
 # source bundle
-bundle_s3_bucket: {{ app_binary_bucket }} # "s3://ent-appbin-015110552125-576f155d9419659a"
-bundle_s3_object: {{ app_binary_key }}    # "entapar-fe/46-831e13b.zip"
+bundle_s3_bucket: "{{ app_binary_bucket }}" # "s3://ent-appbin-015110552125-576f155d9419659a"
+bundle_s3_object: "{{ app_binary_key }}"    # "entapar-fe/46-831e13b.zip"
 
 pm2_delete_before_start: no
 pm2_kill_timeout: 20000
