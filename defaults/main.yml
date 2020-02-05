@@ -1,7 +1,7 @@
 ---
 # Service configurations
 
-service_entrypoint: "./node_modules/soya-next-scripts/scripts/start.js"
+service_entrypoint: "/node_modules/soya-next-server/index.js"
 service_args: ""
 
 service_directory: "/srv/www/{{ service_name }}"
