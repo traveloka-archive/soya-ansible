@@ -1,0 +1,7 @@
+- become: yes
+  block:
+    - name: create ecosystem file
+      copy:
+        content: "{{ pm2_ecosystem_content | to_json }}"
+        dest: "{{ pm2_ecosystem_file }}"
+      when: pm2_generate_ecosystem
