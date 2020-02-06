@@ -1,4 +1,4 @@
 - include: deploy.yml
 - include: pm2-install.yml
-- include: start.yml
-- include: clean.yml
+# - include: start.yml # not required to start and do any in AMI
+# - include: clean.yml
