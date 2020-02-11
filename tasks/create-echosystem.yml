@@ -1,7 +1,15 @@
 - become: yes
   block:
-    - name: create ecosystem file
+    - name: create ecosystem file "{{ pm2_ecosystem_file }}"
       copy:
         content: "{{ pm2_ecosystem_content | to_json }}"
         dest: "{{ pm2_ecosystem_file }}"
       when: pm2_generate_ecosystem
+
+    - name: list files
+      command: ls -al "{{ pm2_ecosystem_file }}"
+      
+    - name: view content of the file
+      command: cat "{{ pm2_ecosystem_file }}"
+
+
